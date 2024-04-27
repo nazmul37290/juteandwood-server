@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
 });
 
 // AacWizo72QLDQdtx
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const uri =
   "mongodb+srv://nazmulnjm:AacWizo72QLDQdtx@cluster0.0kf8y7n.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -36,11 +36,11 @@ async function run() {
     );
     const database = client.db("juteAndWood");
     const allItems = database.collection("allItems");
-    app.get("/items", async (res, req) => {
+    app.get("/items", async (req, res) => {
       const cursor = allItems.find();
       const result = await cursor.toArray();
 
-      req.send(result);
+      res.send(result);
     });
     app.post("/items", async (req, res) => {
       const item = req.body;
@@ -48,6 +48,14 @@ async function run() {
       console.log("server hitting");
       console.log(item);
       const result = await allItems.insertOne(item);
+      res.send(result);
+    });
+
+    app.get("/items/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const query = { _id: new ObjectId(id) };
+      const result = await allItems.findOne(query);
       res.send(result);
     });
   } finally {
