@@ -34,6 +34,16 @@ async function run() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+    const database = client.db("juteAndWood");
+    const allItems = database.collection("allItems");
+    app.post("/items", async (req, res) => {
+      const item = req.body;
+
+      console.log("server hitting");
+      console.log(item);
+      const result = await allItems.insertOne(item);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
