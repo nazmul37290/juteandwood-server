@@ -36,6 +36,12 @@ async function run() {
     );
     const database = client.db("juteAndWood");
     const allItems = database.collection("allItems");
+    app.get("/items", async (res, req) => {
+      const cursor = allItems.find();
+      const result = await cursor.toArray();
+
+      req.send(result);
+    });
     app.post("/items", async (req, res) => {
       const item = req.body;
 
