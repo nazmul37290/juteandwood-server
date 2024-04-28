@@ -65,6 +65,10 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    app.delete("/items/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
