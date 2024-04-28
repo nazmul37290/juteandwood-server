@@ -58,17 +58,56 @@ async function run() {
       res.send(result);
     });
 
+    app.put("/items/update/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const item = req.body;
+      const {
+        name,
+        email,
+        item_name,
+        photo,
+        subcategory_Name,
+        description,
+        price,
+        rating,
+        customization,
+        processing_time,
+        stockStatus,
+      } = item;
+
+      const filter = { _id: new ObjectId(id) };
+      const updatedItem = {
+        $set: {
+          name,
+          email,
+          item_name,
+          photo,
+          subcategory_Name,
+          description,
+          price,
+          rating,
+          customization,
+          processing_time,
+          stockStatus,
+        },
+      };
+
+      const result = await allItems.updateOne(filter, updatedItem);
+      res.send(result);
+    });
+
+    app.delete("/items/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await allItems.deleteOne(query);
+      res.send(result);
+    });
     app.get("/items/email/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const cursor = allItems.find(query);
       const result = await cursor.toArray();
-      res.send(result);
-    });
-    app.delete("/items/:id", async (req, res) => {
-      const id = req.params.id;
-      const query = { _id: new ObjectId(id) };
-      const result = await allItems.deleteOne(query);
       res.send(result);
     });
   } finally {
