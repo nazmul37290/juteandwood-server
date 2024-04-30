@@ -29,12 +29,14 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
+    // await client.db("admin").command({ ping: 1 });
+    // f
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
     const database = client.db("juteAndWood");
     const allItems = database.collection("allItems");
+    const categories = database.collection("subCategory");
     app.get("/items", async (req, res) => {
       const cursor = allItems.find();
       const result = await cursor.toArray();
@@ -107,6 +109,12 @@ async function run() {
       const email = req.params.email;
       const query = { email: email };
       const cursor = allItems.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    app.get("/categories", async (req, res) => {
+      const cursor = categories.find();
       const result = await cursor.toArray();
       res.send(result);
     });
