@@ -118,6 +118,15 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+
+    app.get("/categories/:categoryName", async (req, res) => {
+      const categoryName = req.params.categoryName;
+      console.log(categoryName);
+      const query = { subcategory_Name: categoryName };
+      const cursor = allItems.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
